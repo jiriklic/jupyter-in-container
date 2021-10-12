@@ -9,7 +9,7 @@ The setup is tested on Ubuntu 20.04.2 LTS.
 
 ### Usage
 
-first pre-build the `jupyterlab-img` image using instructions in **[base](./base)**
+first pre-build the `jupyterlab-img` image using instructions in **[base](../base)**
 
 then navigate back to this directory
 ```
