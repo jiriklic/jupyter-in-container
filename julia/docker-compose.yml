@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  deltodon:
+    container_name: julia
+    build:
+      context: .
+    image: julia-img
+    privileged: true
+    environment:
+      DISPLAY: ${DISPLAY}
+    volumes:
+      # docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      # display
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # souce
+      - ./notebooks:/home/${USER}/notebooks
+      - ../..:/home/${USER}/src
+    network_mode: "host"
