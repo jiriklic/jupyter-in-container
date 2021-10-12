@@ -14,7 +14,8 @@ Tested on Ubuntu 20.04.2 LTS.
 
 ### Usage
 
-...
+* **[base](./base)** - is default Docker image setup and all other examples build on it
+* **[gdal-rasterio](./gdal-rasterio)** - is Docker image with GDAL and Rasterio dependencies
 
 ### Requirements
 
