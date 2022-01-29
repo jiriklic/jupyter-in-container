@@ -1,6 +1,6 @@
-# Xeus-Cling Docker image
+# C++ Docker image
 
-Xeus-Cling Docker image with interactive C++ kernel.
+C++ Docker image using Xeus-Cling interactive kernel.
 
 ### Platform
 
@@ -13,7 +13,7 @@ first pre-build the `jupyterlab-img` image using instructions in **[base](../bas
 
 then navigate back to this directory
 ```
-cd xeus-cling/
+cd cpp/
 ```
 
 and run with `docker-compose`
