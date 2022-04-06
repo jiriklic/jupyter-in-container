@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: base-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # BASE_IMAGE: "nvidia/cuda:11.0-base"
+        USER_NAME: ${USER}
+        PYTHON_VERSION: "3.10.4"
+        NODE_VERSION: "16"
+    image: base-img
+    # privileged: true
+    environment:
+      DISPLAY: ${DISPLAY}
+    volumes:
+      # docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      # display
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # souce
+      - ..:/workspace
+      # - ..:/workspace:cached
+    network_mode: "host"
+
+    # Uncomment the next four lines if you will use a ptrace-based debugger like C++, Go, and Rust.
+    # cap_add:
+    #   - SYS_PTRACE
+    # security_opt:
+    #   - seccomp:unconfined
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    
