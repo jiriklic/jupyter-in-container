@@ -9,7 +9,7 @@ services:
       args:
         # BASE_IMAGE: "nvidia/cuda:11.0-base"
         USER_NAME: ${USER}
-        PYTHON_VERSION: "3.10.4"
+        PYTHON_VERSION: "3.8.13"
         NODE_VERSION: "16"
     image: base-img
     # privileged: true

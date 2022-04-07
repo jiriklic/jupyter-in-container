@@ -32,10 +32,13 @@ USER $USER_NAME
 RUN sudo apt update && sudo apt install -y \
         software-properties-common \
     && sudo add-apt-repository ppa:git-core/ppa -y \
+    && sudo add-apt-repository ppa:longsleep/golang-backports -y \
     && sudo apt update && sudo apt install -y \
-        # install build dependencies
+        # install Python build dependencies
         git make build-essential libssl-dev zlib1g-dev libreadline-dev \
         libsqlite3-dev libbz2-dev zip maven wget curl llvm \
+        # install Go
+        golang-go \
     # install pyenv
     && curl https://pyenv.run | bash \
     # install python
