@@ -1,5 +1,5 @@
-ARG PYTHON_TAG
-FROM python:${PYTHON_TAG:-3.8.11-buster}
+ARG UBUNTU_TAG
+FROM ubuntu:${PYTHON_TAG:-jammy-20240227}
 
 LABEL maintainer="Jiri Klic <web@jiriklic.com>"
 
@@ -13,8 +13,8 @@ ARG GROUP_NAME="unknown"
 ENV SHELL=/bin/bash \
     USER_NAME=$USER_NAME \
     USER_ID=$USER_ID \
-    GROUP_ID=$GROUP_ID \
     GROUP_NAME=$GROUP_NAME \
+    GROUP_ID=$GROUP_ID \
     PATH=/home/$USER_NAME/.local/bin:$PATH \
     HOME=/home/$USER_NAME
 
@@ -31,12 +31,8 @@ RUN apt-get update && apt-get install -y sudo \
 
 WORKDIR $HOME
 
-RUN mkdir src && chown -R $USER_NAME:$GROUP_NAME .
+RUN mkdir -p src && chown -R $USER_NAME:$GROUP_NAME .
+
+WORKDIR $HOME/src
 
 USER $USER_NAME
-
-RUN python -m pip install --upgrade pip \
-    && pip install jupyter jupyterlab
-
-
-ENTRYPOINT ["jupyter", "lab","--ip=0.0.0.0"]

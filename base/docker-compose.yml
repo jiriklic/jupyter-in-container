@@ -1,9 +1,16 @@
 version: "3.7"
 
 services:
-  deltodon:
-    container_name: jupyter-lab
-    image: jupyterlab-img
+  testbase:
+    container_name: base
+    build:
+      context: .
+      args:
+          USER_ID: ${USER_ID:-1000}
+          GROUP_ID: ${GROUP_ID:-1000}
+          USER_NAME: ${USER_NAME:-ironman}
+          GROUP_NAME: ${GROUP_NAME:-avengers}
+    image: base-img
     privileged: true
     environment:
       DISPLAY: ${DISPLAY}
@@ -13,6 +20,5 @@ services:
       # display
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
-      - ./notebooks:/home/${USER}/notebooks
-      - ../..:/home/${USER}/src
+      - ../..:/home/${USER_NAME:-ironman}/src
     network_mode: "host"
