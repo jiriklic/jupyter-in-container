@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y sudo \
 
 WORKDIR $HOME
 
-RUN mkdir -p src && chown -R $USER_NAME:$GROUP_NAME .
+RUN mkdir src && chown -R $USER_NAME:$GROUP_NAME .
 
 WORKDIR $HOME/src
 
