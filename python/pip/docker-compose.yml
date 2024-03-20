@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  testpython:
+    container_name: python
+    build:
+      context: .
+      args:
+          USER_ID: ${USER_ID:-1000}
+          GROUP_ID: ${GROUP_ID:-1000}
+          USER_NAME: ${USER_NAME:-ironman}
+          GROUP_NAME: ${GROUP_NAME:-avengers}
+          PYTHON_VERSION: ${PYTHON_VERSION:-3.11.8}
+    image: python-img
+    privileged: true
+    environment:
+      DISPLAY: ${DISPLAY}
+    volumes:
+      # docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      # display
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # souce
+      # - ./notebooks:/home/${USER_NAME:-ironman}/src/notebooks
+      - ./src:/home/${USER_NAME:-ironman}/src
+    network_mode: "host"
