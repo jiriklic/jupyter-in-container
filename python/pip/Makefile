@@ -13,7 +13,7 @@ up:
 
 down:
 	@echo "Stopping and removing container.."
-	@docker compose up
+	@docker compose down
 
 clean:
 	@echo "Deleting Docker image.."
