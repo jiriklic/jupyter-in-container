@@ -1,6 +1,6 @@
 services:
-  jupyterlab:
-    container_name: jupyterlab
+  piplab:
+    container_name: piplab
     build:
       context: .
       args:
@@ -8,7 +8,7 @@ services:
           GROUP_ID: ${GROUP_ID:-1000}
           USER_NAME: ${USER_NAME:-deltodon}
           GROUP_NAME: ${GROUP_NAME:-deltodon}
-    image: python-img
+    image: piplab-img
     privileged: true
     environment:
       DISPLAY: ${DISPLAY}
@@ -19,5 +19,4 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
       - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
-      # - ./src:/home/${USER_NAME:-deltodon}/src
     network_mode: "host"
