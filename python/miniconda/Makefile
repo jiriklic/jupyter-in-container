@@ -1,7 +1,7 @@
 .PHONY: all
 all: help
 
-IMAGE_NAME="piplab-img"
+IMAGE_NAME="miniconda-img"
 
 build:
 	@echo "Building Docker image.."

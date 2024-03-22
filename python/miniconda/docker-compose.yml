@@ -1,0 +1,23 @@
+services:
+  jupyterlab:
+    container_name: jupyterlab
+    build:
+      context: .
+      args:
+          USER_ID: ${USER_ID:-1000}
+          GROUP_ID: ${GROUP_ID:-1000}
+          USER_NAME: ${USER_NAME:-deltodon}
+          GROUP_NAME: ${GROUP_NAME:-deltodon}
+    image: miniconda-img
+    privileged: true
+    environment:
+      DISPLAY: ${DISPLAY}
+    volumes:
+      # docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      # display
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # souce
+      - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
+      # - ./src:/home/${USER_NAME:-deltodon}/src
+    network_mode: "host"
