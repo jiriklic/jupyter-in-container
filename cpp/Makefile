@@ -6,7 +6,6 @@ IMAGE_NAME="cpplab-img"
 build:
 	@echo "Building Docker image.."
 	@docker compose build --no-cache
-	# @docker compose build
 
 up:
 	@echo "Creating and starting container.."

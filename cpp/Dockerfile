@@ -16,6 +16,7 @@ ENV SHELL=/bin/bash \
     GROUP_NAME=${GROUP_NAME} \
     GROUP_ID=${GROUP_ID} \
     HOME=/home/${USER_NAME} \
+    CONDA_DIR=/home/${USER_NAME}/conda \
     PATH=/home/${USER_NAME}/.local/bin:/home/${USER_NAME}/conda/bin:${PATH}
 
 RUN apt-get update -q && \
@@ -39,26 +40,26 @@ USER ${USER_NAME}
 
 RUN wget "https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh -q \
     # && mkdir -p /opt \
-    && bash miniconda.sh -b -p ${HOME}/conda \
+    && bash miniconda.sh -b -p ${CONDA_DIR} \
     && rm miniconda.sh \
-    && sudo ln -s ${HOME}/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
-    && echo ". ${HOME}/conda/etc/profile.d/conda.sh" >> ~/.bashrc \
+    && sudo ln -s ${CONDA_DIR}/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
+    && echo ". ${CONDA_DIR}/etc/profile.d/conda.sh" >> ~/.bashrc \
     && echo "conda activate base" >> ~/.bashrc \
-    # && . ${HOME}/conda/etc/profile.d/conda.sh \
+    # && . ${CONDA_DIR}/etc/profile.d/conda.sh \
     # && conda activate base \
     # # install C++ kernels
     # && conda install -y xeus-cling -c conda-forge \
-    && find ${HOME}/conda/ -follow -type f -name '*.a' -delete \
-    && find ${HOME}/conda/ -follow -type f -name '*.js.map' -delete \
-    && ${HOME}/conda/bin/conda clean -afy
-
-RUN mkdir notebooks && chown -R ${USER_NAME}:${GROUP_NAME} .
+    && find ${CONDA_DIR}/ -follow -type f -name '*.a' -delete \
+    && find ${CONDA_DIR}/ -follow -type f -name '*.js.map' -delete \
+    && ${CONDA_DIR}/bin/conda clean -afy
 
 USER $USER_NAME
 
+RUN mkdir notebooks && chown -R ${USER_NAME}:${GROUP_NAME} .
+
 COPY ./requirements.txt ${HOME}/requirements.txt
 
-RUN . ${HOME}/conda/etc/profile.d/conda.sh \
+RUN . ${CONDA_DIR}/etc/profile.d/conda.sh \
     && conda activate base \
     # install jupyterlab
     && conda install -y --file requirements.txt -c conda-forge \
