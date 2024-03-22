@@ -1,29 +1,24 @@
 .PHONY: all
 all: help
 
-IMAGE_NAME="cpplab-img"
+NAME="cpplab"
 
 build:
 	@echo "Building Docker image.."
 	@docker compose build --no-cache
 
-up:
-	@echo "Creating and starting container.."
-	@docker compose up
-
-down:
-	@echo "Stopping and removing container.."
-	@docker compose down
+run:
+	@echo "Starting container.."
+	@docker compose run --rm $(NAME) /bin/bash
 
 clean:
 	@echo "Deleting Docker image.."
-	@docker image rm $(IMAGE_NAME)
+	@docker image rm $(NAME)-img
 
 help:
 	@echo "Available make targets:"
 	@echo " make help         - Print help"
 	@echo " make build        - Build Docker image"
-	@echo " make up           - Create and start container"
-	@echo " make down         - Stop and remove container"
+	@echo " make run          - Start container"
 	@echo " make clean        - Delete Docker image"
 	@echo ""

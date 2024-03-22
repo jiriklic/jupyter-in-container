@@ -2,8 +2,10 @@
 
 C++ Docker image `cpplab-img` with Xeus-Cling interactive kernel.
 
-* Python 3.11.7
+* Python 3.11.8
 * conda 24.1.2
+
+![](../docs/images/jupyter-cpp.PNG)
 
 
 ### Platform
@@ -30,14 +32,23 @@ make build
 
 ### Usage
 
-create and start container
+There is an issue in how C++ kernels are initiated when running jupyerlab from Docker `ENTRYPOINT`. So the `docker compose up` does not work well. So use instead the container in interactive mode.
+
+
+
+start container in interactive mode
 ```bash
 make up
 ```
 
-stop and delete container
+run jupyterlab inside the container
 ```bash
-make down
+jupyter lab
+```
+
+exit the container once you are finished with the jupyterlab
+```bash
+exit
 ```
 
 view all `make` options

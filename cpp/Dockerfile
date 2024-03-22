@@ -39,19 +39,16 @@ WORKDIR ${HOME}
 USER ${USER_NAME}
 
 RUN wget "https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh -q \
-    # && mkdir -p /opt \
     && bash miniconda.sh -b -p ${CONDA_DIR} \
     && rm miniconda.sh \
     && sudo ln -s ${CONDA_DIR}/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
-    && echo ". ${CONDA_DIR}/etc/profile.d/conda.sh" >> ~/.bashrc \
-    && echo "conda activate base" >> ~/.bashrc \
-    # && . ${CONDA_DIR}/etc/profile.d/conda.sh \
-    # && conda activate base \
-    # # install C++ kernels
-    # && conda install -y xeus-cling -c conda-forge \
+    && echo ". ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate base" >> ~/.bashrc \
     && find ${CONDA_DIR}/ -follow -type f -name '*.a' -delete \
     && find ${CONDA_DIR}/ -follow -type f -name '*.js.map' -delete \
-    && ${CONDA_DIR}/bin/conda clean -afy
+    && find ${CONDA_DIR}/ -follow -type f -name '*.pyc' -delete \
+    && ${CONDA_DIR}/bin/conda clean -afy \
+    && ${CONDA_DIR}/bin/conda clean --tarballs --index-cache --packages --yes \
+    && ${CONDA_DIR}/bin/conda clean --force-pkgs-dirs --all --yes
 
 USER $USER_NAME
 
@@ -66,5 +63,4 @@ RUN . ${CONDA_DIR}/etc/profile.d/conda.sh \
     # install C++ kernels
     && conda install -y xeus-cling -c conda-forge
 
-
-ENTRYPOINT [ "jupyter", "lab", "--ip=0.0.0.0" ]
+# ENTRYPOINT [ "jupyter", "lab", "--ip=0.0.0.0" ]
