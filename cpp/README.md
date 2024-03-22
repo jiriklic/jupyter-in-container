@@ -1,33 +1,59 @@
 # C++ Docker image
 
-C++ Docker image using Xeus-Cling interactive kernel.
+C++ Docker image `cpplab-img` with Xeus-Cling interactive kernel.
+
+* Python 3.11.7
+* conda 24.1.2
+
 
 ### Platform
 
-The setup is tested on Ubuntu 20.04.2 LTS. 
+The setup was tested on host machine OS
 
-
-### Usage
-
-first pre-build the `jupyterlab-img` image using instructions in **[base](../base)**
-
-then navigate back to this directory
-```
-cd cpp/
-```
-
-and run with `docker-compose`
-```
-docker-compose up
-```
-
-The `jupyterlab-img` image can also run GUI applications from Docker container. See OpenAI Gym example in **[base/notebooks](./notebooks)** to see how it is done.
+* Ubuntu Focal 20.04 (LTS)
 
 
 ### Requirements
 
-* **[Docker](https://docs.docker.com/engine/install/ubuntu/)**
+* **[Docker >= 25.0.4](https://docs.docker.com/engine/install/ubuntu/)**
 
-* **[Docker Compose](https://docs.docker.com/compose/install/)**
+* **[Docker Compose V2](https://docs.docker.com/compose/install/linux/#install-using-the-repository)**
+
+
+### Setup
+
+build Docker image
+```bash
+make build
+```
+
+
+### Usage
+
+create and start container
+```bash
+make up
+```
+
+stop and delete container
+```bash
+make down
+```
+
+view all `make` options
+```bash
+make help
+```
+
+
+### Clean up
+
+delete the image once you do not need it
+```bash
+make clean
+```
+
+
+### Reference material
 
 

@@ -1,11 +1,14 @@
-version: "3.7"
-
 services:
-  deltodon:
-    container_name: cling-cpp
+  cpplab:
+    container_name: cpplab
     build:
       context: .
-    image: cling-cpp-img
+      args:
+          USER_ID: ${USER_ID:-1000}
+          GROUP_ID: ${GROUP_ID:-1000}
+          USER_NAME: ${USER_NAME:-deltodon}
+          GROUP_NAME: ${GROUP_NAME:-deltodon}
+    image: cpplab-img
     privileged: true
     environment:
       DISPLAY: ${DISPLAY}
@@ -15,6 +18,6 @@ services:
       # display
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
-      - ./notebooks:/home/${USER}/notebooks
-      - ../..:/home/${USER}/src
+      - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
+      # - ./src:/home/${USER_NAME:-deltodon}/src
     network_mode: "host"

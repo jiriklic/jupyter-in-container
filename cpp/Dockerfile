@@ -1,34 +1,69 @@
-FROM jupyterlab-img
+ARG UBUNTU_TAG
+FROM ubuntu:${UBUNTU_TAG:-jammy-20240227}
 
 LABEL maintainer="Jiri Klic <web@jiriklic.com>"
 
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+ARG USER_NAME="unknown"
+ARG GROUP_NAME="unknown"
+ARG CONDA_VERSION="py311_24.1.2-0"
 
-# RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+# Configure environment
+ENV SHELL=/bin/bash \
+    USER_NAME=${USER_NAME} \
+    USER_ID=${USER_ID} \
+    GROUP_NAME=${GROUP_NAME} \
+    GROUP_ID=${GROUP_ID} \
+    HOME=/home/${USER_NAME} \
+    PATH=/home/${USER_NAME}/.local/bin:/home/${USER_NAME}/conda/bin:${PATH}
+
+RUN apt-get update -q && \
+    apt-get install -q -y --no-install-recommends \
+        sudo \
+        ca-certificates \
+        openssh-client \
+        wget \
+    # Ensure sudo group users are not 
+    # asked for a password when using 
+    # sudo command by ammending sudoers file
+    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    # create new group and user
+    && groupadd -g ${GROUP_ID} ${GROUP_NAME} \
+    && useradd -l -u ${USER_ID} -g ${GROUP_NAME} -ms ${SHELL} ${USER_NAME} \
+    && usermod -aG sudo ${USER_NAME}
+
+WORKDIR ${HOME}
+
+USER ${USER_NAME}
+
+RUN wget "https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh -q \
+    # && mkdir -p /opt \
+    && bash miniconda.sh -b -p ${HOME}/conda \
+    && rm miniconda.sh \
+    && sudo ln -s ${HOME}/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
+    && echo ". ${HOME}/conda/etc/profile.d/conda.sh" >> ~/.bashrc \
+    && echo "conda activate base" >> ~/.bashrc \
+    # && . ${HOME}/conda/etc/profile.d/conda.sh \
+    # && conda activate base \
+    # # install C++ kernels
+    # && conda install -y xeus-cling -c conda-forge \
+    && find ${HOME}/conda/ -follow -type f -name '*.a' -delete \
+    && find ${HOME}/conda/ -follow -type f -name '*.js.map' -delete \
+    && ${HOME}/conda/bin/conda clean -afy
+
+RUN mkdir notebooks && chown -R ${USER_NAME}:${GROUP_NAME} .
+
+USER $USER_NAME
+
+COPY ./requirements.txt ${HOME}/requirements.txt
+
+RUN . ${HOME}/conda/etc/profile.d/conda.sh \
+    && conda activate base \
+    # install jupyterlab
+    && conda install -y --file requirements.txt -c conda-forge \
+    # install C++ kernels
+    && conda install -y xeus-cling -c conda-forge
 
 
-# RUN mkdir temp && cd temp \
-
-# RUN XEUS_PREFIX=/usr/local/xeus-cling \
-#     && wget -O /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-$(uname -m).sh \
-#     && chmod +x /tmp/miniforge.sh \
-#     && mkdir -p ${XEUS_PREFIX} \
-#     && /tmp/miniforge.sh -bfp ${XEUS_PREFIX} -u \
-#     && rm /tmp/miniforge.sh \
-#     # Add miniforge to the path temporarily
-#     %% export PATH="$PATH:${XEUS_PREFIX}/bin" \
-#     # Install dependencies
-#     && conda install -c conda-forge -y cmake "xeus>=2.0,<3.0" cling=0.8 clangdev=5.0.0 llvmdev=5 "nlohmann_json>=3.9.1,<3.10" "cppzmq>=4.6.0,<5" "xtl>=0.7,<0.8" pugixml "cxxopts>=2.1.1,<2.2"
-#     # Install xeus-cling
-#     && rm -rf /tmp/xeus-cling \
-#     && cd /tmp \
-#     && git clone https://github.com/jupyter-xeus/xeus-cling.git \
-#     && cd xeus-cling \
-#     # 0.13.0
-#     && git checkout $(git describe --tags $(git rev-list --tags --max-count=1)) \
-#     && mkdir -p build && cd build \
-#     && cmake -D CMAKE_INSTALL_PREFIX=${XEUS_PREFIX} -D CMAKE_INSTALL_LIBDIR=${XEUS_PREFIX}/lib -D DOWNLOAD_GTEST=ON .. \
-#     && make install -j$(nproc) \
-#     && rm -rf /tmp/xeus-cling \
-#     # Remove build dependencies
-#     && conda clean -y -f \
-#     && cd ${XEUS_PREFIX}
+ENTRYPOINT [ "jupyter", "lab", "--ip=0.0.0.0" ]
