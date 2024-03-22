@@ -1,5 +1,5 @@
 ARG UBUNTU_TAG
-FROM ubuntu:${PYTHON_TAG:-jammy-20240227}
+FROM ubuntu:${UBUNTU_TAG:-jammy-20240227}
 
 LABEL maintainer="Jiri Klic <web@jiriklic.com>"
 
