@@ -1,5 +1,5 @@
-ARG UBUNTU_TAG
-FROM ubuntu:${PYTHON_TAG:-jammy-20240227}
+ARG PYTHON_TAG
+FROM python:${PYTHON_TAG:-3.11.8-bookworm}
 
 LABEL maintainer="Jiri Klic <web@jiriklic.com>"
 
@@ -7,7 +7,6 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 ARG USER_NAME="unknown"
 ARG GROUP_NAME="unknown"
-
 
 # Configure environment
 ENV SHELL=/bin/bash \
@@ -18,8 +17,8 @@ ENV SHELL=/bin/bash \
     PATH=/home/$USER_NAME/.local/bin:$PATH \
     HOME=/home/$USER_NAME
 
-
-RUN apt-get update && apt-get install -y sudo \
+RUN apt-get update && apt-get install -y \
+        sudo \
     # Ensure sudo group users are not 
     # asked for a password when using 
     # sudo command by ammending sudoers file
@@ -31,8 +30,13 @@ RUN apt-get update && apt-get install -y sudo \
 
 WORKDIR $HOME
 
-RUN mkdir src && chown -R $USER_NAME:$GROUP_NAME .
+RUN mkdir notebooks && chown -R $USER_NAME:$GROUP_NAME .
 
-WORKDIR $HOME/src
+COPY ./requirements.txt $HOME/requirements.txt
 
 USER $USER_NAME
+
+# install jupyterlab
+RUN pip install -r requirements.txt
+
+ENTRYPOINT [ "jupyter", "lab", "--ip=0.0.0.0" ]

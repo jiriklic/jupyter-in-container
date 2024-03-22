@@ -1,7 +1,9 @@
-# Base Docker image
+# Docker Python with Miniconda
 
-Build base Docker image `base-img` with custom user and group settings. This image can be used in interactive mode as installation test bed.
+Python Docker image `miniconda-img` with custom user and group settings.
 
+* Python 3.11.7
+* conda 24.1.2
 
 
 ### Platform
@@ -28,9 +30,14 @@ make build
 
 ### Usage
 
-run container in interactive mode
+create and start container
 ```bash
-make run
+make up
+```
+
+stop and delete container
+```bash
+make down
 ```
 
 view all `make` options
@@ -45,3 +52,9 @@ delete the image once you do not need it
 ```bash
 make clean
 ```
+
+
+### Reference material
+
+
+

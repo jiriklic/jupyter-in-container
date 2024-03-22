@@ -1,16 +1,14 @@
-version: "3.7"
-
 services:
-  testbase:
-    container_name: base
+  jupyterlab:
+    container_name: jupyterlab
     build:
       context: .
       args:
           USER_ID: ${USER_ID:-1000}
           GROUP_ID: ${GROUP_ID:-1000}
-          USER_NAME: ${USER_NAME:-ironman}
-          GROUP_NAME: ${GROUP_NAME:-avengers}
-    image: base-img
+          USER_NAME: ${USER_NAME:-deltodon}
+          GROUP_NAME: ${GROUP_NAME:-deltodon}
+    image: miniconda-img
     privileged: true
     environment:
       DISPLAY: ${DISPLAY}
@@ -20,5 +18,6 @@ services:
       # display
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
-      - ../..:/home/${USER_NAME:-ironman}/src
+      - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
+      # - ./src:/home/${USER_NAME:-deltodon}/src
     network_mode: "host"

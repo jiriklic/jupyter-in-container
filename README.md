@@ -1,6 +1,6 @@
 # Jupyter lab in Docker container
 
-Run Jupyter lab from inside of the docker container with the same user and group settings as on the host.
+Run Jupyter lab from inside of the docker container with custom user and group settings.
 
 ### Usage
 

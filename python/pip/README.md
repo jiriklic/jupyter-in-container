@@ -1,6 +1,6 @@
-# Base Docker image
+# Docker Python with pip
 
-Build base Docker image `base-img` with custom user and group settings. This image can be used in interactive mode as installation test bed.
+Python Docker image `python-img` with custom user and group settings.
 
 
 
@@ -28,9 +28,14 @@ make build
 
 ### Usage
 
-run container in interactive mode
+create and start container
 ```bash
-make run
+make up
+```
+
+stop and delete container
+```bash
+make down
 ```
 
 view all `make` options
