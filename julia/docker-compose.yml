@@ -1,10 +1,13 @@
-version: "3.7"
-
 services:
-  deltodon:
+  julia:
     container_name: julia
     build:
       context: .
+      args:
+          USER_ID: ${USER_ID:-1000}
+          GROUP_ID: ${GROUP_ID:-1000}
+          USER_NAME: ${USER_NAME:-deltodon}
+          GROUP_NAME: ${GROUP_NAME:-deltodon}
     image: julia-img
     privileged: true
     environment:
@@ -15,6 +18,5 @@ services:
       # display
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
-      - ./notebooks:/home/${USER}/notebooks
-      - ../..:/home/${USER}/src
+      - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
     network_mode: "host"
