@@ -1,0 +1,7 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "ctrl+numpad_multiply",
+        "command": "editor.action.toggleRenderWhitespace"
+    }
+]

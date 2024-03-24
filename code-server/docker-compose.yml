@@ -1,6 +1,6 @@
 services:
-  testbase:
-    container_name: base
+  code:
+    container_name: code-server
     build:
       context: .
       args:
@@ -8,7 +8,8 @@ services:
           GROUP_ID: ${GROUP_ID:-1000}
           USER_NAME: ${USER_NAME:-deltodon}
           GROUP_NAME: ${GROUP_NAME:-deltodon}
-    image: base-img
+          
+    image: code-server-img
     privileged: true
     environment:
       DISPLAY: ${DISPLAY}
