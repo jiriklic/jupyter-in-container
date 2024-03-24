@@ -8,7 +8,6 @@ services:
           GROUP_ID: ${GROUP_ID:-1000}
           USER_NAME: ${USER_NAME:-deltodon}
           GROUP_NAME: ${GROUP_NAME:-deltodon}
-          
     image: code-server-img
     privileged: true
     environment:
