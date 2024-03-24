@@ -1,0 +1,24 @@
+{
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "editor.renderWhitespace": "all",
+    "security.workspace.trust.untrustedFiles": "open",
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ],
+    "julia.symbolCacheDownload": true,
+    "markdown-preview-github-styles.colorTheme": "light",
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "cmake.configureOnOpen": true,
+    "cmake.showOptionsMovedNotification": false,
+    "git.openRepositoryInParentFolders": "never",
+    "vsicons.dontShowNewVersionMessage": true,
+    "workbench.colorTheme": "Default Dark+",
+    "files.autoSave": "off",
+    "window.menuBarVisibility": "classic"
+}
