@@ -1,20 +1,16 @@
 .PHONY: all
 all: help
 
-IMAGE_NAME="miniconda-img"
+IMAGE_NAME="poetry-img"
 
 build:
 	@echo "Building Docker image.."
-	@mkdir -p notebooks
+	@mkdir -p src/notebooks
 	@docker compose build --no-cache
 
-up:
-	@echo "Creating and starting container.."
-	@docker compose up
-
-down:
-	@echo "Stopping and removing container.."
-	@docker compose down
+run:
+	@echo "Starting container.."
+	@docker compose run --rm poetrylab /bin/bash
 
 clean:
 	@echo "Deleting Docker image.."
@@ -24,7 +20,6 @@ help:
 	@echo "Available make targets:"
 	@echo " make help         - Print help"
 	@echo " make build        - Build Docker image"
-	@echo " make up           - Create and start container"
-	@echo " make down         - Stop and remove container"
+	@echo " make run          - Start container"
 	@echo " make clean        - Delete Docker image"
 	@echo ""

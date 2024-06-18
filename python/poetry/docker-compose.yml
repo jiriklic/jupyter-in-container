@@ -1,6 +1,6 @@
 services:
-  condalab:
-    container_name: condalab
+  poetrylab:
+    container_name: poetrylab
     build:
       context: .
       args:
@@ -8,7 +8,7 @@ services:
           GROUP_ID: ${GROUP_ID:-1000}
           USER_NAME: ${USER_NAME:-deltodon}
           GROUP_NAME: ${GROUP_NAME:-deltodon}
-    image: miniconda-img
+    image: poetry-img
     privileged: true
     environment:
       DISPLAY: ${DISPLAY}
@@ -18,6 +18,5 @@ services:
       # display
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
-      - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
-      # - ./src:/home/${USER_NAME:-deltodon}/src
+      - ./src:/home/${USER_NAME:-deltodon}/src
     network_mode: "host"
