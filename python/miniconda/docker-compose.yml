@@ -1,6 +1,6 @@
 services:
-  jupyterlab:
-    container_name: jupyterlab
+  condalab:
+    container_name: condalab
     build:
       context: .
       args:

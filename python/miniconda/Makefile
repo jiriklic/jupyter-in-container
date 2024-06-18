@@ -5,6 +5,7 @@ IMAGE_NAME="miniconda-img"
 
 build:
 	@echo "Building Docker image.."
+	@mkdir -p notebooks
 	@docker compose build --no-cache
 
 up:
