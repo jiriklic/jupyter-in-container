@@ -19,5 +19,4 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       # souce
       - ./notebooks:/home/${USER_NAME:-deltodon}/notebooks
-      # - ./src:/home/${USER_NAME:-deltodon}/src
     network_mode: "host"

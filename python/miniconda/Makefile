@@ -8,13 +8,9 @@ build:
 	@mkdir -p notebooks
 	@docker compose build --no-cache
 
-up:
-	@echo "Creating and starting container.."
-	@docker compose up
-
-down:
-	@echo "Stopping and removing container.."
-	@docker compose down
+run:
+	@echo "Starting container.."
+	@docker compose run --rm condalab /bin/bash
 
 clean:
 	@echo "Deleting Docker image.."

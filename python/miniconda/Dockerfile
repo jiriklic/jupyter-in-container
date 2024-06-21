@@ -15,8 +15,9 @@ ENV SHELL=/bin/bash \
     USER_ID=$USER_ID \
     GROUP_NAME=$GROUP_NAME \
     GROUP_ID=$GROUP_ID \
-    PATH=/home/$USER_NAME/.local/bin:/opt/conda/bin:$PATH \
-    HOME=/home/$USER_NAME
+    PATH=/home/$USER_NAME/.local/bin:/home/$USER_NAME/conda/bin:$PATH \
+    HOME=/home/$USER_NAME \
+    CONDA_DIR=/home/$USER_NAME/conda 
 
 RUN apt-get update -q && \
     apt-get install -q -y --no-install-recommends \
@@ -31,30 +32,26 @@ RUN apt-get update -q && \
     # create new group and user
     && groupadd -g $GROUP_ID $GROUP_NAME \
     && useradd -l -u $USER_ID -g $GROUP_NAME -ms $SHELL $USER_NAME \
-    && usermod -aG sudo $USER_NAME
+    && usermod -aG sudo $USER_NAME \
+    # clean Docker Cache
+    && sudo apt-get clean \
+    && sudo rm -rf /var/lib/apt/lists/*
 
 WORKDIR $HOME
 
-RUN wget "https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh" -O miniconda.sh -q \
-    && mkdir -p /opt \
-    && bash miniconda.sh -b -p /opt/conda \
-    && rm miniconda.sh \
-    && ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh \
-    && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc \
-    && echo "conda activate base" >> ~/.bashrc \
-    && find /opt/conda/ -follow -type f -name '*.a' -delete \
-    && find /opt/conda/ -follow -type f -name '*.js.map' -delete \
-    && /opt/conda/bin/conda clean -afy
+USER $USER_NAME
 
 RUN mkdir notebooks && chown -R $USER_NAME:$GROUP_NAME .
 
-COPY ./requirements.txt $HOME/requirements.txt
+COPY ./environment.yml $HOME/environment.yml
 
-USER $USER_NAME
-
-RUN . /opt/conda/etc/profile.d/conda.sh \
-    && conda activate base \
-    # install jupyterlab
-    && pip install -r requirements.txt
-
-ENTRYPOINT [ "jupyter", "lab", "--ip=0.0.0.0" ]
+RUN wget --no-hsts --quiet https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh -O $HOME/miniforge.sh \
+    && /bin/bash $HOME/miniforge.sh -b -p $CONDA_DIR \
+    && rm $HOME/miniforge.sh \
+    && conda clean --tarballs --index-cache --packages --yes \
+    && find ${CONDA_DIR} -follow -type f -name '*.a' -delete \
+    && find ${CONDA_DIR} -follow -type f -name '*.pyc' -delete \
+    && find ${CONDA_DIR} -follow -type f -name '*.js.map' -delete \
+    && conda clean --force-pkgs-dirs --all --yes \
+    && conda env create -f environment.yml \
+    && echo ". ${CONDA_DIR}/etc/profile.d/conda.sh && conda activate dev" >> ${HOME}/.bashrc
